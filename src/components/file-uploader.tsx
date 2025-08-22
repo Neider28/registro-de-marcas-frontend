@@ -25,6 +25,14 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: File[];
 
   /**
+   * Whether to show the preview of the uploaded files.
+   * @type boolean
+   * @default true
+   * @example showPreview={false}
+   */
+  showPreview?: boolean;
+
+  /**
    * Function to be called when the value changes.
    * @type React.Dispatch<React.SetStateAction<File[]>>
    * @default undefined
@@ -103,6 +111,7 @@ export function FileUploader(props: FileUploaderProps) {
     maxFiles = 1,
     multiple = false,
     disabled = false,
+    showPreview = true,
     className,
     ...dropzoneProps
   } = props;
@@ -244,7 +253,7 @@ export function FileUploader(props: FileUploaderProps) {
           </div>
         )}
       </Dropzone>
-      {files?.length ? (
+      {files?.length && showPreview ? (
         <ScrollArea className='h-fit w-full px-3'>
           <div className='max-h-48 space-y-4'>
             {files?.map((file, index) => (
