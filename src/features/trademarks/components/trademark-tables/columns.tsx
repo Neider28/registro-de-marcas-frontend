@@ -1,6 +1,6 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
-import { Trademark } from '@/constants/data';
+import { Trademark } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { CheckCircle2, GalleryVerticalEnd, XCircle } from 'lucide-react';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import { CellAction } from './cell-action';
 
 export const columns: ColumnDef<Trademark>[] = [
   {
+    id: 'logo',
     accessorKey: 'logo',
     header: 'Logo',
     size: 64,
@@ -44,8 +45,10 @@ export const columns: ColumnDef<Trademark>[] = [
     }
   },
   {
+    id: 'titular',
     accessorKey: 'titular',
     header: 'Titular',
+    cell: ({ cell }) => <div>{cell.getValue<Trademark['titular']>()}</div>,
     meta: {
       label: 'Titular'
     }
@@ -79,6 +82,7 @@ export const columns: ColumnDef<Trademark>[] = [
   },
   {
     id: 'actions',
+    accessorKey: 'actions',
     header: 'Acciones',
     cell: ({ row }) => <CellAction data={row.original} />
   }

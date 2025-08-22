@@ -48,7 +48,7 @@ export default function TrademarkListingPage() {
   return (
     <TrademarkTable
       data={trademarks}
-      totalItems={trademarks.length}
+      totalItems={trademarks?.length || 0}
       columns={columns}
     />
   );

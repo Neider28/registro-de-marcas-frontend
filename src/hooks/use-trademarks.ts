@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/config/axios';
-import { Trademark } from '@/constants/data';
-
-interface ApiResponse {
-  code: string;
-  status: string;
-  message: string;
-  result: Trademark[];
-}
+import { ApiResponse, Trademark } from '@/types';
 
 // Función global para refetch que puede ser llamada desde cualquier lugar
 let globalRefetch: (() => Promise<void>) | null = null;
@@ -22,14 +15,16 @@ export const useTrademarks = () => {
       setIsLoading(true);
       setError(null);
 
-      const response = await api.get<ApiResponse>(
+      const response = await api.get<ApiResponse<Trademark[]>>(
         process.env.NEXT_PUBLIC_API_TRADEMARK || ''
       );
 
-      if (response.data.code) {
-        setTrademarks(response.data.result);
+      if (response.data.success) {
+        // Asegurar que siempre sea un array
+        setTrademarks(response.data.data || []);
       } else {
         setError(response.data.message || 'Error al cargar las marcas');
+        setTrademarks([]); // Establecer array vacío en caso de error
       }
     } catch (error: any) {
       if (error.response?.data?.message) {
@@ -41,6 +36,7 @@ export const useTrademarks = () => {
       } else {
         setError('Error al cargar las marcas. Por favor intenta nuevamente.');
       }
+      setTrademarks([]); // Establecer array vacío en caso de error
     } finally {
       setIsLoading(false);
     }
