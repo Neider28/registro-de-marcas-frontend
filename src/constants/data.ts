@@ -1,12 +1,4 @@
-import { NavItem } from '@/types';
-
-export type Trademark = {
-  logo: string;
-  marca: string;
-  titular: string;
-  id: number;
-  estado: string;
-};
+import { NavItem, Trademark } from '@/types';
 
 export const navItems: NavItem[] = [
   {
