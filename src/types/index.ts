@@ -33,3 +33,40 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+// API Response Types
+export interface ApiResponse<T = any> {
+  success: boolean;
+  status_code: number;
+  message: string;
+  timestamp: string;
+  data: T;
+  error: string | null;
+}
+
+// Tipos específicos para diferentes endpoints
+export interface LoginResponseData {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+export interface Trademark {
+  logo: string | null;
+  marca: string;
+  titular: string;
+  id: number;
+  estado: string;
+}
+
+export interface User {
+  avatar: string | null;
+  created_at: string;
+  email: string;
+  first_name: string;
+  id: number;
+  is_active: boolean;
+  last_name: string;
+  role: string;
+  updated_at: string;
+}
