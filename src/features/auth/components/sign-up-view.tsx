@@ -1,6 +1,5 @@
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { SignUp as ClerkSignUpForm } from '@clerk/nextjs';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { IconStar } from '@tabler/icons-react';
 import { Metadata } from 'next';
@@ -71,11 +70,11 @@ export default function SignUpViewPage({ stars }: { stars: number }) {
               <span className='font-display font-medium'>{stars}</span>
             </div>
           </Link>
-          <ClerkSignUpForm
+          {/* <ClerkSignUpForm
             initialValues={{
               emailAddress: 'your_mail+clerk_test@example.com'
             }}
-          />
+          /> */}
           <p className='text-muted-foreground px-8 text-center text-sm'>
             By clicking continue, you agree to our{' '}
             <Link
