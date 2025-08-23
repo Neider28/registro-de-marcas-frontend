@@ -15,7 +15,7 @@ import { useAuth } from '@/contexts/auth-context';
 
 export function UserNav() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   if (user) {
     return (
       <DropdownMenu>
@@ -47,8 +47,8 @@ export function UserNav() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            {/* <SignOutButton redirectUrl='/auth/sign-in' /> */}
+          <DropdownMenuItem onClick={() => logout()}>
+            Cerrar sesión
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
