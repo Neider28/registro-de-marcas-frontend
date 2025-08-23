@@ -29,7 +29,12 @@ export const useTrademarkById = (id: string | number | null) => {
         setError(null);
 
         const response = await api.get<ApiResponse<Trademark>>(
-          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${id}`
+          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+            }
+          }
         );
 
         if (response.data.success) {
@@ -70,7 +75,12 @@ export const useTrademarkById = (id: string | number | null) => {
       setError(null);
 
       const response = await api.get<ApiResponse>(
-        `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}${id}`
+        `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+          }
+        }
       );
 
       if (response.data.success) {

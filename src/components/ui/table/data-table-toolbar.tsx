@@ -7,10 +7,9 @@ import { DataTableDateFilter } from '@/components/ui/table/data-table-date-filte
 import { DataTableFacetedFilter } from '@/components/ui/table/data-table-faceted-filter';
 import { DataTableSliderFilter } from '@/components/ui/table/data-table-slider-filter';
 import { DataTableViewOptions } from '@/components/ui/table/data-table-view-options';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 interface DataTableToolbarProps<TData> extends React.ComponentProps<'div'> {
   table: Table<TData>;
@@ -22,16 +21,12 @@ export function DataTableToolbar<TData>({
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const globalFilter = table.getState().globalFilter;
 
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
     [table]
   );
-
-  const onReset = React.useCallback(() => {
-    table.resetColumnFilters();
-  }, [table]);
 
   return (
     <div
@@ -44,21 +39,21 @@ export function DataTableToolbar<TData>({
       {...props}
     >
       <div className='flex flex-1 flex-wrap items-center gap-2'>
+        {/* Campo de búsqueda global */}
+        <div className='relative'>
+          <MagnifyingGlassIcon className='text-muted-foreground absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2' />
+          <Input
+            placeholder='Buscar en toda la tabla...'
+            value={globalFilter ?? ''}
+            onChange={(event) => table.setGlobalFilter(event.target.value)}
+            className='h-8 w-64 pl-8'
+          />
+        </div>
+
+        {/* Filtros de columnas */}
         {columns.map((column) => (
           <DataTableToolbarFilter key={column.id} column={column} />
         ))}
-        {isFiltered && (
-          <Button
-            aria-label='Reiniciar filtros'
-            variant='outline'
-            size='sm'
-            className='border-dashed'
-            onClick={onReset}
-          >
-            <Cross2Icon />
-            Reiniciar filtros
-          </Button>
-        )}
       </div>
       <div className='flex items-center gap-2'>
         {children}

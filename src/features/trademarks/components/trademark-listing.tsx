@@ -45,11 +45,5 @@ export default function TrademarkListingPage() {
     );
   }
 
-  return (
-    <TrademarkTable
-      data={trademarks}
-      totalItems={trademarks?.length || 0}
-      columns={columns}
-    />
-  );
+  return <TrademarkTable data={trademarks} columns={columns} />;
 }

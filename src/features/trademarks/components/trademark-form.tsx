@@ -254,14 +254,24 @@ export default function TrademarkForm({
         // Edición - usar PATCH
         const response = await api.patch<ApiResponse<Trademark>>(
           `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${trademarkId}`,
-          jsonData
+          jsonData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+            }
+          }
         );
         toast.success(response.data.message);
       } else {
         // Creación - usar POST
         const response = await api.post<ApiResponse<Trademark>>(
           process.env.NEXT_PUBLIC_API_TRADEMARK || '',
-          jsonData
+          jsonData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+            }
+          }
         );
         toast.error(response.data.message);
       }

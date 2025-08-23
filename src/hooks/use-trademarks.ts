@@ -16,7 +16,12 @@ export const useTrademarks = () => {
       setError(null);
 
       const response = await api.get<ApiResponse<Trademark[]>>(
-        process.env.NEXT_PUBLIC_API_TRADEMARK || ''
+        process.env.NEXT_PUBLIC_API_TRADEMARK || '',
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+          }
+        }
       );
 
       if (response.data.success) {

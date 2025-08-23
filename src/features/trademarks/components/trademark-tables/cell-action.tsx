@@ -31,7 +31,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
       const response = await api.delete<
         ApiResponse<{ id: number; deleted: boolean }>
-      >(`${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${data.id}`);
+      >(`${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${data.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+        }
+      });
 
       toast.success(response.data.message);
 

@@ -22,7 +22,6 @@ import {
   type Parser,
   type UseQueryStateOptions,
   parseAsArrayOf,
-  parseAsInteger,
   parseAsString,
   useQueryState,
   useQueryStates
@@ -33,8 +32,6 @@ import { useDebouncedCallback } from '@/hooks/use-debounced-callback';
 import { getSortingStateParser } from '@/lib/parsers';
 import type { ExtendedColumnSort } from '@/types/data-table';
 
-const PAGE_KEY = 'page';
-const PER_PAGE_KEY = 'perPage';
 const SORT_KEY = 'sort';
 const ARRAY_SEPARATOR = ',';
 const DEBOUNCE_MS = 300;
@@ -42,15 +39,15 @@ const THROTTLE_MS = 50;
 
 interface UseDataTableProps<TData>
   extends Omit<
-      TableOptions<TData>,
-      | 'state'
-      | 'pageCount'
-      | 'getCoreRowModel'
-      | 'manualFiltering'
-      | 'manualPagination'
-      | 'manualSorting'
-    >,
-    Required<Pick<TableOptions<TData>, 'pageCount'>> {
+    TableOptions<TData>,
+    | 'state'
+    | 'pageCount'
+    | 'getCoreRowModel'
+    | 'manualFiltering'
+    | 'manualPagination'
+    | 'manualSorting'
+  > {
+  pageCount?: number; // Hacer opcional ya que se calcula dinámicamente
   initialState?: Omit<Partial<TableState>, 'sorting'> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
@@ -67,7 +64,6 @@ interface UseDataTableProps<TData>
 export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const {
     columns,
-    pageCount = -1,
     initialState,
     history = 'replace',
     debounceMs = DEBOUNCE_MS,
@@ -109,15 +105,10 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialState?.columnVisibility ?? {});
 
-  const [page, setPage] = useQueryState(
-    PAGE_KEY,
-    parseAsInteger.withOptions(queryStateOptions).withDefault(1)
-  );
-  const [perPage, setPerPage] = useQueryState(
-    PER_PAGE_KEY,
-    parseAsInteger
-      .withOptions(queryStateOptions)
-      .withDefault(initialState?.pagination?.pageSize ?? 10)
+  // Paginación local sin query params
+  const [page, setPage] = React.useState(1);
+  const [perPage, setPerPage] = React.useState(
+    initialState?.pagination?.pageSize ?? 10
   );
 
   const pagination: PaginationState = React.useMemo(() => {
@@ -131,14 +122,14 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     (updaterOrValue: Updater<PaginationState>) => {
       if (typeof updaterOrValue === 'function') {
         const newPagination = updaterOrValue(pagination);
-        void setPage(newPagination.pageIndex + 1);
-        void setPerPage(newPagination.pageSize);
+        setPage(newPagination.pageIndex + 1);
+        setPerPage(newPagination.pageSize);
       } else {
-        void setPage(updaterOrValue.pageIndex + 1);
-        void setPerPage(updaterOrValue.pageSize);
+        setPage(updaterOrValue.pageIndex + 1);
+        setPerPage(updaterOrValue.pageSize);
       }
     },
-    [pagination, setPage, setPerPage]
+    [pagination]
   );
 
   const columnIds = React.useMemo(() => {
@@ -226,6 +217,9 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>(initialColumnFilters);
 
+  // Estado para el filtrado global
+  const [globalFilter, setGlobalFilter] = React.useState('');
+
   const onColumnFiltersChange = React.useCallback(
     (updaterOrValue: Updater<ColumnFiltersState>) => {
       if (enableAdvancedFilter) return;
@@ -258,17 +252,63 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     [debouncedSetFilterValues, filterableColumns, enableAdvancedFilter]
   );
 
+  // Función de filtrado global personalizada
+  const globalFilterFn = React.useCallback(
+    (row: any, columnId: string, filterValue: string) => {
+      if (!filterValue) return true;
+
+      const searchValue = filterValue.toLowerCase();
+      const cellValue = row.getValue(columnId);
+
+      if (cellValue == null || cellValue === undefined) return false;
+
+      const stringValue = String(cellValue).toLowerCase();
+      return stringValue.includes(searchValue);
+    },
+    []
+  );
+
+  // Filtrar los datos localmente cuando hay un filtro global
+  const filteredData = React.useMemo(() => {
+    if (!globalFilter) return tableProps.data;
+
+    return tableProps.data.filter((row: any) => {
+      // Buscar en todas las columnas habilitadas para filtrado global
+      return columns.some((column) => {
+        if (!column.enableGlobalFilter) return false;
+
+        const columnId = column.id || (column as any).accessorKey;
+        if (!columnId) return false;
+
+        const cellValue = row[columnId as keyof typeof row];
+        if (cellValue == null || cellValue === undefined) return false;
+
+        const stringValue = String(cellValue).toLowerCase();
+        const searchValue = globalFilter.toLowerCase();
+
+        return stringValue.includes(searchValue);
+      });
+    });
+  }, [tableProps.data, globalFilter, columns]);
+
+  // Calcular el pageCount dinámicamente basado en los datos filtrados
+  const dynamicPageCount = React.useMemo(() => {
+    return Math.ceil(filteredData.length / perPage);
+  }, [filteredData.length, perPage]);
+
   const table = useReactTable({
     ...tableProps,
+    data: filteredData, // Usar los datos filtrados
     columns,
     initialState,
-    pageCount,
+    pageCount: dynamicPageCount, // Usar el pageCount dinámico
     state: {
       pagination,
       sorting,
       columnVisibility,
       rowSelection,
-      columnFilters
+      columnFilters,
+      globalFilter
     },
     defaultColumn: {
       ...tableProps.defaultColumn,
@@ -280,6 +320,8 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     onSortingChange,
     onColumnFiltersChange,
     onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -287,9 +329,10 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    manualPagination: true,
+    manualPagination: false, // Cambiar a false para paginación local
     manualSorting: true,
-    manualFiltering: true
+    manualFiltering: true, // Mantener true para filtros de columnas manuales
+    enableGlobalFilter: true // Habilitar filtrado global
   });
 
   return { table, shallow, debounceMs, throttleMs };

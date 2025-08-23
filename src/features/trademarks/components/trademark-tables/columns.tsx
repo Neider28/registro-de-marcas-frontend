@@ -39,7 +39,7 @@ export const columns: ColumnDef<Trademark>[] = [
     accessorKey: 'marca',
     header: 'Marca',
     cell: ({ cell }) => <div>{cell.getValue<Trademark['marca']>()}</div>,
-    enableColumnFilter: true,
+    enableGlobalFilter: true,
     meta: {
       label: 'Marca'
     }
@@ -49,6 +49,7 @@ export const columns: ColumnDef<Trademark>[] = [
     accessorKey: 'titular',
     header: 'Titular',
     cell: ({ cell }) => <div>{cell.getValue<Trademark['titular']>()}</div>,
+    enableGlobalFilter: true,
     meta: {
       label: 'Titular'
     }
@@ -75,7 +76,7 @@ export const columns: ColumnDef<Trademark>[] = [
         </Badge>
       );
     },
-    enableColumnFilter: true,
+    enableGlobalFilter: false,
     meta: {
       label: 'Estado'
     }
@@ -84,6 +85,10 @@ export const columns: ColumnDef<Trademark>[] = [
     id: 'actions',
     accessorKey: 'actions',
     header: 'Acciones',
-    cell: ({ row }) => <CellAction data={row.original} />
+    cell: ({ row }) => <CellAction data={row.original} />,
+    enableGlobalFilter: false,
+    meta: {
+      label: 'Acciones'
+    }
   }
 ];
