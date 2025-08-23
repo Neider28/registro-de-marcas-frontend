@@ -14,6 +14,8 @@ interface AuthContextType {
   logout: () => void;
   checkAuth: () => Promise<void>;
   getUserDetails: (token: string) => Promise<User | null>;
+  updateUser: (userData: Partial<User>) => Promise<boolean>;
+  signUp: (userData: Partial<User>) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -99,6 +101,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Función para actualizar datos del usuario
+  const updateUser = async (userData: Partial<User>): Promise<boolean> => {
+    try {
+      const token =
+        localStorage.getItem('auth-token') || getCookie('auth-token');
+      if (!token) {
+        toast.error('No hay token de autenticación');
+        return false;
+      }
+
+      const response = await api.patch<ApiResponse<User>>(
+        process.env.NEXT_PUBLIC_API_V1_AUTH_ME || '',
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.data.success) {
+        // Actualizar el usuario localmente
+        setUser((prev) => (prev ? { ...prev, ...userData } : null));
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(response.data.message || 'Error al actualizar el perfil');
+        return false;
+      }
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('Error al actualizar el perfil');
+      }
+      return false;
+    }
+  };
+
   // Función de login
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -149,6 +190,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signUp = async (userData: Partial<User>): Promise<boolean> => {
+    try {
+      const response = await api.post<ApiResponse<User>>(
+        process.env.NEXT_PUBLIC_API_V1_AUTH_REGISTER || '',
+        userData
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(
+          response.data.message ||
+            'Error en el registro. Por favor, intenta nuevamente.'
+        );
+        return false;
+      }
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('Error en el registro. Por favor, intenta nuevamente.');
+      }
+      return false;
+    }
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -156,7 +224,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     login,
     logout,
     checkAuth,
-    getUserDetails
+    getUserDetails,
+    updateUser,
+    signUp
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

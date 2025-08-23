@@ -124,9 +124,9 @@ export default function SignInViewPage() {
           </blockquote>
         </div>
       </div>
-      <div className='flex h-full items-center justify-center p-4 lg:p-8'>
+      <div className='flex h-full items-center justify-center p-4'>
         <div className='flex w-full max-w-md flex-col items-center justify-center space-y-6'>
-          <Card className='w-full py-16'>
+          <Card className='w-full py-14'>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

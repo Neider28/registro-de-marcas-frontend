@@ -3,7 +3,6 @@
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
