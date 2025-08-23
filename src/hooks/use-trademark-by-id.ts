@@ -1,13 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '@/config/axios';
-import { Trademark } from '@/types';
-
-interface ApiResponse {
-  code: string;
-  status: string;
-  message: string;
-  result: Trademark;
-}
+import { ApiResponse, Trademark } from '@/types';
 
 export const useTrademarkById = (id: string | number | null) => {
   const [trademark, setTrademark] = useState<Trademark | null>(null);
@@ -35,12 +28,12 @@ export const useTrademarkById = (id: string | number | null) => {
         setIsLoading(true);
         setError(null);
 
-        const response = await api.get<ApiResponse>(
-          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}${id}`
+        const response = await api.get<ApiResponse<Trademark>>(
+          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${id}`
         );
 
-        if (response.data.code) {
-          setTrademark(response.data.result);
+        if (response.data.success) {
+          setTrademark(response.data.data);
         } else {
           setError(response.data.message || 'Error al cargar la marca');
         }
@@ -80,8 +73,8 @@ export const useTrademarkById = (id: string | number | null) => {
         `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}${id}`
       );
 
-      if (response.data.code) {
-        setTrademark(response.data.result);
+      if (response.data.success) {
+        setTrademark(response.data.data);
       } else {
         setError(response.data.message || 'Error al cargar la marca');
       }

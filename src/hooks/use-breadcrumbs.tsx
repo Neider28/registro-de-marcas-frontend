@@ -50,6 +50,13 @@ const routePatterns: RoutePattern[] = [
         link: `/dashboard/trademark-registration/${params.id}`
       }
     ]
+  },
+  {
+    pattern: /^\/dashboard\/profile$/,
+    breadcrumbs: () => [
+      { title: 'Dashboard', link: '/dashboard' },
+      { title: 'Perfil', link: '/dashboard/profile' }
+    ]
   }
 ];
 
