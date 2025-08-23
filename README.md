@@ -1,115 +1,225 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/9113740/201498864-2a900c64-d88f-4ed4-b5cf-770bcb57e1f5.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/9113740/201498152-b171abb8-9225-487a-821c-6ff49ee48579.png">
-</picture>
+# 🏷️ Sistema de Registro de Marcas
 
-<div align="center"><strong>Next.js Admin Dashboard Starter Template With Shadcn-ui</strong></div>
-<div align="center">Built with the Next.js 15 App Router</div>
-<br />
 <div align="center">
-<a href="https://dub.sh/shadcn-dashboard">View Demo</a>
-<span>
+
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+
+**Sistema de gestión de marcas comerciales con autenticación, CRUD y perfil de usuario**
+
 </div>
 
-## Overview
+---
+## ✨ Características Principales
 
-This is a starter template using the following stack:
+### 🔐 **Sistema de Autenticación Completo**
+- **Login/Registro** con validación de formularios
+- **Gestión de sesiones** con tokens JWT
+- **Protección de rutas** automática
+- **Contexto de autenticación** global
 
-- Framework - [Next.js 15](https://nextjs.org/13)
-- Language - [TypeScript](https://www.typescriptlang.org)
-- Auth - [Clerk](https://go.clerk.com/ILdYhn7)
-- Error tracking - [<picture><img alt="Sentry" src="public/assets/sentry.svg">
-  </picture>](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy26q2-nextjs&utm_content=github-banner-project-tryfree)
-- Styling - [Tailwind CSS v4](https://tailwindcss.com)
-- Components - [Shadcn-ui](https://ui.shadcn.com)
-- Schema Validations - [Zod](https://zod.dev)
-- State Management - [Zustand](https://zustand-demo.pmnd.rs)
-- Search params state manager - [Nuqs](https://nuqs.47ng.com/)
-- Tables - [Tanstack Data Tables](https://ui.shadcn.com/docs/components/data-table) • [Dice table](https://www.diceui.com/docs/components/data-table)
-- Forms - [React Hook Form](https://ui.shadcn.com/docs/components/form)
-- Command+k interface - [kbar](https://kbar.vercel.app/)
-- Linting - [ESLint](https://eslint.org)
-- Pre-commit Hooks - [Husky](https://typicode.github.io/husky/)
-- Formatting - [Prettier](https://prettier.io)
+### 🏷️ **CRUD de Marcas Comerciales**
+- **Crear** nuevas marcas con formulario paso a paso
+- **Leer** lista de marcas con tabla avanzada
+- **Actualizar** información de marcas existentes
+- **Eliminar** marcas con confirmación
+- **Subida de logos** con validación de archivos
+- **Filtros y búsqueda** en tiempo real
 
-_If you are looking for a Tanstack start dashboard template, here is the [repo](https://git.new/tanstack-start-dashboard)._
+### 👤 **Gestión de Perfil de Usuario**
+- **Edición de información** personal
+- **Subida de avatar** con preview
+- **Validación de datos** en tiempo real
+- **Persistencia** de cambios
 
-## Pages
+### 🎨 **Interfaz Moderna y Responsiva**
+- **Diseño adaptativo** para móviles y desktop
+- **Tema claro/oscuro** automático
+- **Componentes reutilizables** con Shadcn/ui
+- **Animaciones fluidas** y transiciones
 
-| Pages                                                                                                                                                                  | Specifications                                                                                                                                                                                                                                                          |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Signup / Signin](https://go.clerk.com/ILdYhn7)                                                                                                                        | Authentication with **Clerk** provides secure authentication and user management with multiple sign-in options including passwordless authentication, social logins, and enterprise SSO - all designed to enhance security while delivering a seamless user experience. |
-| [Dashboard (Overview)](https://shadcn-dashboard.kiranism.dev/dashboard)                                                                                                | Cards with Recharts graphs for analytics. Parallel routes in the overview sections feature independent loading, error handling, and isolated component rendering.                                                                                                       |
-| [Product](https://shadcn-dashboard.kiranism.dev/dashboard/product)                                                                                                     | Tanstack tables with server side searching, filter, pagination by Nuqs which is a Type-safe search params state manager in nextjs                                                                                                                                       |
-| [Product/new](https://shadcn-dashboard.kiranism.dev/dashboard/product/new)                                                                                             | A Product Form with shadcn form (react-hook-form + zod).                                                                                                                                                                                                                |
-| [Profile](https://shadcn-dashboard.kiranism.dev/dashboard/profile)                                                                                                     | Clerk's full-featured account management UI that allows users to manage their profile and security settings                                                                                                                                                             |
-| [Kanban Board](https://shadcn-dashboard.kiranism.dev/dashboard/kanban)                                                                                                 | A Drag n Drop task management board with dnd-kit and zustand to persist state locally.                                                                                                                                                                                  |
-| [Not Found](https://shadcn-dashboard.kiranism.dev/dashboard/notfound)                                                                                                  | Not Found Page Added in the root level                                                                                                                                                                                                                                  |
-| [Global Error](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy26q2-nextjs&utm_content=github-banner-project-tryfree) | A centralized error page that captures and displays errors across the application. Integrated with **Sentry** to log errors, provide detailed reports, and enable replay functionality for better debugging.                                                            |
+---
 
-## Feature based organization
+## 🛠️ Stack Tecnológico
 
-```plaintext
+### **Frontend**
+- **Framework**: Next.js 15 con App Router
+- **Lenguaje**: TypeScript 5.7
+- **UI Components**: Shadcn/ui + Radix UI
+- **Styling**: Tailwind CSS 4.0
+- **State Management**: React Context + Zustand
+- **Forms**: React Hook Form + Zod validation
+- **Tables**: TanStack Table con filtros avanzados
+
+### **Backend Integration**
+- **HTTP Client**: Axios con interceptors
+- **API**: RESTful con autenticación Bearer
+- **Validation**: Zod schemas
+- **Error Handling**: Manejo global de errores
+
+### **Herramientas de Desarrollo**
+- **Linting**: ESLint + Prettier
+- **Git Hooks**: Husky + lint-staged
+- **Package Manager**: pnpm
+- **Build Tool**: Next.js con Turbopack
+
+---
+
+## 🚀 Instalación y Configuración
+
+### **Prerrequisitos**
+- Node.js 18+ 
+- pnpm (recomendado) o npm
+- Git
+
+### **1. Clonar el Repositorio**
+```bash
+git clone https://github.com/tu-usuario/registro-de-marcas-frontend.git
+cd registro-de-marcas-frontend
+```
+
+### **2. Instalar Dependencias**
+```bash
+pnpm install
+```
+
+### **3. Configurar Variables de Entorno**
+```bash
+cp env.example.txt .env.local
+```
+
+Editar `.env.local` con tus configuraciones:
+```env
+# API Backend
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_V1_AUTH_LOGIN=/api/v1/auth/login
+NEXT_PUBLIC_API_V1_AUTH_REGISTER=/api/v1/auth/register
+NEXT_PUBLIC_API_V1_AUTH_ME=/api/v1/auth/me
+NEXT_PUBLIC_API_V1_TRADEMARKS=/api/v1/trademarks
+```
+
+### **4. Ejecutar en Desarrollo**
+```bash
+pnpm dev
+```
+
+La aplicación estará disponible en: **http://localhost:3000**
+
+---
+
+## 📱 Funcionalidades del Sistema
+
+### **🏠 Página Principal**
+- Redirección automática según estado de autenticación
+- Loading states optimizados
+- Navegación inteligente
+
+### **🔐 Autenticación**
+- **Sign In**: Login con email y contraseña
+- **Sign Up**: Registro de nuevos usuarios
+- **Persistencia**: Tokens almacenados en cookies/localStorage
+- **Logout**: Cierre de sesión seguro
+
+### **📊 Dashboard Principal**
+- **Vista general** de marcas registradas
+- **Estadísticas** y métricas
+- **Navegación rápida** a funcionalidades
+
+### **🏷️ Gestión de Marcas**
+- **Listado**: Tabla con paginación, filtros y búsqueda
+- **Crear**: Formulario paso a paso (4 pasos)
+- **Editar**: Modificación de marcas existentes
+- **Eliminar**: Confirmación antes de borrar
+- **Logo**: Subida y preview de imágenes
+
+### **👤 Perfil de Usuario**
+- **Información personal**: Nombre, apellido, email
+- **Avatar**: Subida y gestión de imagen de perfil
+- **Edición**: Modo inline para cambios rápidos
+- **Validación**: Verificación en tiempo real
+
+---
+
+## 🏗️ Arquitectura del Proyecto
+
+```
 src/
-├── app/ # Next.js App Router directory
-│ ├── (auth)/ # Auth route group
-│ │ ├── (signin)/
-│ ├── (dashboard)/ # Dashboard route group
-│ │ ├── layout.tsx
-│ │ ├── loading.tsx
-│ │ └── page.tsx
-│ └── api/ # API routes
-│
-├── components/ # Shared components
-│ ├── ui/ # UI components (buttons, inputs, etc.)
-│ └── layout/ # Layout components (header, sidebar, etc.)
-│
-├── features/ # Feature-based modules
-│ ├── feature/
-│ │ ├── components/ # Feature-specific components
-│ │ ├── actions/ # Server actions
-│ │ ├── schemas/ # Form validation schemas
-│ │ └── utils/ # Feature-specific utilities
-│ │
-├── lib/ # Core utilities and configurations
-│ ├── auth/ # Auth configuration
-│ ├── db/ # Database utilities
-│ └── utils/ # Shared utilities
-│
-├── hooks/ # Custom hooks
-│ └── use-debounce.ts
-│
-├── stores/ # Zustand stores
-│ └── dashboard-store.ts
-│
-└── types/ # TypeScript types
-└── index.ts
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Rutas de autenticación
+│   ├── dashboard/         # Panel principal
+│   └── globals.css        # Estilos globales
+├── components/            # Componentes reutilizables
+│   ├── ui/               # Componentes base (Shadcn/ui)
+│   ├── layout/           # Componentes de layout
+│   └── auth/             # Componentes de autenticación
+├── features/             # Módulos por funcionalidad
+│   ├── auth/            # Autenticación
+│   ├── trademarks/      # Gestión de marcas
+│   └── profile/         # Perfil de usuario
+├── contexts/             # Contextos de React
+│   └── auth-context.tsx # Contexto de autenticación
+├── hooks/               # Hooks personalizados
+├── lib/                 # Utilidades y configuraciones
+├── types/               # Tipos TypeScript
+└── config/              # Configuraciones (axios, etc.)
 ```
 
-## Getting Started
+---
 
-> [!NOTE]  
-> We are using **Next 15** with **React 19**, follow these steps:
+## 🔧 Scripts Disponibles
 
-Clone the repo:
+```bash
+# Desarrollo
+pnpm dev              # Servidor de desarrollo con hot reload
 
+# Producción
+pnpm build            # Construir para producción
+pnpm start            # Iniciar servidor de producción
+
+# Calidad de Código
+pnpm lint             # Verificar linting
+pnpm lint:fix         # Corregir errores de linting automáticamente
+pnpm format           # Formatear código con Prettier
 ```
-git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git
-```
 
-- `pnpm install` ( we have legacy-peer-deps=true added in the .npmrc)
-- Create a `.env.local` file by copying the example environment file:
-  `cp env.example.txt .env.local`
-- Add the required environment variables to the `.env.local` file.
-- `pnpm run dev`
+---
 
-##### Environment Configuration Setup
+## 🌟 Características Destacadas
 
-To configure the environment for this project, refer to the `env.example.txt` file. This file contains the necessary environment variables required for authentication and error tracking.
+### **🎯 Experiencia de Usuario**
+- **Formularios inteligentes** con validación en tiempo real
+- **Feedback visual** inmediato para todas las acciones
+- **Loading states** optimizados para mejor percepción
+- **Manejo de errores** amigable y descriptivo
 
-You should now be able to access the application at http://localhost:3000.
+### **⚡ Performance**
+- **Lazy loading** de componentes
+- **Optimización de imágenes** automática
+- **Code splitting** inteligente
+- **Caching** de datos optimizado
 
-> [!WARNING]
-> After cloning or forking the repository, be cautious when pulling or syncing with the latest changes, as this may result in breaking conflicts.
+### **🔒 Seguridad**
+- **Validación** de entrada en frontend y backend
+- **Sanitización** de datos
+- **Protección CSRF** implícita
+- **Headers de seguridad** configurados
 
-Cheers! 🥂
+---
+
+## 🤝 Contribuir
+
+1. **Fork** el proyecto
+2. **Crea** una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** a la rama (`git push origin feature/AmazingFeature`)
+5. **Abre** un Pull Request
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+---
