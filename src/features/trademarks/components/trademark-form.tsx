@@ -25,8 +25,9 @@ import { useRouter } from 'next/navigation';
 import { refetchTrademarks } from '@/hooks/use-trademarks';
 import { useTrademarkById } from '@/hooks/use-trademark-by-id';
 import { AvatarLogo } from '@/components/ui/avatar-logo';
+import { ApiResponse, Trademark } from '@/types';
 
-const MAX_FILE_SIZE = 5000000;
+const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -62,7 +63,7 @@ const formSchema = z.object({
       }
 
       return false;
-    }, `Max file size is 5MB.`),
+    }, `Tamaño máximo del archivo es 1MB.`),
   marca: z.string().min(1, {
     message: 'Campo requerido'
   }),
@@ -240,12 +241,10 @@ export default function TrademarkForm({
 
       // Prepara los datos JSON con base64
       const jsonData = {
-        parameter: {
-          marca: values.marca,
-          titular: values.titular,
-          estado: 'activo',
-          logo: logoBase64
-        }
+        marca: values.marca,
+        titular: values.titular,
+        estado: 'activo',
+        logo: logoBase64
       };
 
       // Determinar si es creación o edición
@@ -253,15 +252,18 @@ export default function TrademarkForm({
 
       if (isEditing) {
         // Edición - usar PATCH
-        await api.patch(
-          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}${trademarkId}`,
+        const response = await api.patch<ApiResponse<Trademark>>(
+          `${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${trademarkId}`,
           jsonData
         );
-        toast.success('Marca actualizada exitosamente');
+        toast.success(response.data.message);
       } else {
         // Creación - usar POST
-        await api.post(process.env.NEXT_PUBLIC_API_TRADEMARK || '', jsonData);
-        toast.success('Marca registrada exitosamente');
+        const response = await api.post<ApiResponse<Trademark>>(
+          process.env.NEXT_PUBLIC_API_TRADEMARK || '',
+          jsonData
+        );
+        toast.error(response.data.message);
       }
 
       await refetchTrademarks();

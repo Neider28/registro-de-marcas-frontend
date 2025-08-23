@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { api } from '@/config/axios';
-import { Trademark } from '@/types';
+import { ApiResponse, Trademark } from '@/types';
 import { refetchTrademarks } from '@/hooks/use-trademarks';
 import { IconEdit, IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
@@ -29,16 +29,18 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     try {
       setLoading(true);
 
-      await api.delete(
-        `${process.env.NEXT_PUBLIC_API_TRADEMARK}${data.id}` || ''
-      );
+      const response = await api.delete<
+        ApiResponse<{ id: number; deleted: boolean }>
+      >(`${process.env.NEXT_PUBLIC_API_TRADEMARK || ''}/${data.id}`);
 
-      toast.success('Marca eliminada exitosamente');
+      toast.success(response.data.message);
 
       setOpen(false);
 
       // Volver a cargar las marcas para actualizar la tabla usando la función global
-      await refetchTrademarks();
+      if (response.data.success) {
+        await refetchTrademarks();
+      }
     } catch (error: any) {
       // Mostrar toast de error
       if (error.response?.data?.message) {
