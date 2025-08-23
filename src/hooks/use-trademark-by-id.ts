@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '@/config/axios';
-import { Trademark } from '@/constants/data';
+import { Trademark } from '@/types';
 
 interface ApiResponse {
   code: string;

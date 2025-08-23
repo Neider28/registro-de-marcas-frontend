@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { api } from '@/config/axios';
-import { Trademark } from '@/constants/data';
+import { Trademark } from '@/types';
 import { refetchTrademarks } from '@/hooks/use-trademarks';
 import { IconEdit, IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
